@@ -65,35 +65,58 @@ function FSH_get_rotation(_node){
 }
 
 function FSH_set_rotation(_node,_angle,_frame){
-    node.setTextAttr(_node, "ROTATION.ANGLEZ",frame.current(),_z)
+    var frame = _frame != undefined ? _frame : frame.current()
+    node.setTextAttr(_node, "ROTATION.ANGLEZ",frame,_angle)
 }
 
 function FSH_get_scale(_node){
-    return node.getTextAttr(_node, frame.current(), "SCALE");
+    var frame = _frame != undefined ? _frame : frame.current()
+    return node.getTextAttr(_node,frame, "SCALE");
 }
 
 function FSH_set_scale(_node,_scale,_frame){
-
+    var frame = _frame != undefined ? _frame : frame.current()
+    node.setTextAttr(_node, "SCALE",frame.current(),_scale)
 }
 
-function FSH_set_transform(_node,_transform_obect){
-
+function FSH_set_transform(_node,_transform_obect,_frame){
+    var frame = _frame != undefined ? _frame : frame.current()
+    const key_attr_table = {
+        pos_x:"POSITION.X",
+        pos_y:"POSITION.Y",
+        pos_z:"POSITION.Z",
+        rotation:"ROTATION",
+        scale:"SCALE",
+    }
+    var adapter = _transform_obect
+    if(_transform_obect.position != undefined){
+        adapter.pos_x = _transform_obect.position.x
+        adapter.pos_y = _transform_obect.position.y
+        adapter.pos_z = _transform_obect.position.z
+    }
+    for(const key in Object.keys(adapter)){
+        const value = adapter[key]
+        if(value == undefined){
+            continue
+        }
+        if(key_attr_table[key]!=undefined){
+            const attribute_name = key_attr_table[key]
+            node.setTextAttr(_node, attribute_name,frame,value)
+        }
+    }
 }
 
 
 //attribute 
-function FSH_get_attribute(_node,_attr){
-    
+function FSH_get_attribute_value(_node,_attr,_frame){
+    var frame = _frame != undefined ? _frame : frame.current()
+    return node.getTextAttr(_node,frame,_attr);
 }
-function FSH_set_attribute(_node,_attr,_value){
+function FSH_set_attribute_value(_node,_attr,_value,_frame){
+    var frame = _frame != undefined ? _frame : frame.current()
+    node.setTextAttr(_node, _attr,frame,value)
+}
 
-}
-function FSH_get_attribute_at_frame(_node,_attr,_frame){
-    
-}
-function FSH_set_attribute_at_frame(_node,_attr,_value,_frame){
-
-}
 function FSH_get_attribute_object(_node){
 
 }
