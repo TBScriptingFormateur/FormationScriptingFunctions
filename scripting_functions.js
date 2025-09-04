@@ -118,7 +118,16 @@ function FSH_set_attribute_value(_node,_attr,_value,_frame){
 }
 
 function FSH_get_attribute_object(_node){
+    var table = []
 
+}
+
+function FSH_show_attributes(_node){
+    attributes = node.getAttrList(_node)
+    for(var a = 0 ; i < attributes.lengrh ; a++){
+        const attr = attributes[a]
+        if(attr.has)
+    }
 }
 
 // substitutions 
@@ -133,6 +142,7 @@ function FSH_add_sub(_node,_subname,_frame){
 function FSH_get_exposed_sub(_node,_subname,_frame){
 
 }
+
 
 //keys 
 function FSH_get_key(_node,_attr,_frame){
