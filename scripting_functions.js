@@ -134,6 +134,7 @@ function FSH_get_attribute_object(_node){
             names.push(attr.fullKeyword())
         }
     }
+    table["node_type"] = node.getType(_node)
     for(var n in names){
         const name = name[n]
         const value = node.getTextAttr(_node,frame,name);
