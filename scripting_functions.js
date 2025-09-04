@@ -118,16 +118,57 @@ function FSH_set_attribute_value(_node,_attr,_value,_frame){
 }
 
 function FSH_get_attribute_object(_node){
+    var frame = _frame != undefined ? _frame : frame.current()
     var table = []
-
-}
-
-function FSH_show_attributes(_node){
+    var names = []
     attributes = node.getAttrList(_node)
     for(var a = 0 ; i < attributes.lengrh ; a++){
         const attr = attributes[a]
-        if(attr.has)
+        if(attr.hasSubAttributes()){
+            sub_attr = attr.getSubAttributes()
+            for (var b in sub_attr){
+                var sub = sub_attr[b]
+                names.push(sub.fullKeyword())
+            }
+        }else{
+            names.push(attr.fullKeyword())
+        }
     }
+    for(var n in names){
+        const name = name[n]
+        const value = node.getTextAttr(_node,frame,name);
+        table[name] = value
+    }
+    return table
+}
+
+function FSH_show_attributes(_node,_frame){
+    var frame = _frame != undefined ? _frame : frame.current()
+    var table = []
+    var names = []
+    attributes = node.getAttrList(_node)
+    for(var a = 0 ; i < attributes.lengrh ; a++){
+        const attr = attributes[a]
+        if(attr.hasSubAttributes()){
+            sub_attr = attr.getSubAttributes()
+            for (var b in sub_attr){
+                var sub = sub_attr[b]
+                names.push(sub.fullKeyword())
+            }
+        }else{
+            names.push(attr.fullKeyword())
+        }
+    }
+    var msg = "ATTRIBUTES OF "+_node+" ( "+node.getType(_node)+") \n"
+    for(var n in names){
+        const name = name[n]
+        const value = node.getTextAttr(_node,frame,name);
+        table[name] = value
+        msg+=name+" : "+value
+    }
+    MessageLog.trace(msg)
+    MessageBox.information(msg)
+    return table
 }
 
 // substitutions 
