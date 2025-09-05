@@ -1,0 +1,23 @@
+{
+    "list_de_node": [
+        {
+            "name": "drawing_A",
+            "type": "READ",
+            "x": 0,
+            "y": 100
+        },
+        {
+            "name": "peg_a",
+            "type": "PEG",
+            "x": 100,
+            "y": 10
+        }
+        ,{
+            "name": "compo",
+            "type": "COMPOSITE",
+            "x": 200,
+            "y": 100
+        }
+    ],
+    "options": "efsgsdfgd"
+}

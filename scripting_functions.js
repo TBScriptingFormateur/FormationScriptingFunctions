@@ -102,6 +102,7 @@ function FSH_set_transform(_node,_transform_obect,_frame){
         adapter.pos_y = _transform_obect.position.y
         adapter.pos_z = _transform_obect.position.z
     }
+    /*
     for(const key in Object.keys(adapter)){
         const value = adapter[key]
         if(value == undefined){
@@ -111,7 +112,7 @@ function FSH_set_transform(_node,_transform_obect,_frame){
             const attribute_name = key_attr_table[key]
             node.setTextAttr(_node, attribute_name,aframe,value)
         }
-    }
+    }*/
 }
 
 
@@ -142,7 +143,7 @@ function FSH_get_attribute_object(_node){
             names.push(attr.fullKeyword())
         }
     }
-    table["node_type"] = node.getType(_node)
+    table["node_type"] = node.type(_node)
     for(var n in names){
         const name = name[n]
         const value = node.getTextAttr(_node,aframe,name);
@@ -155,7 +156,7 @@ function FSH_show_attributes(_node,_frame){
     const aframe = _frame != undefined ? _frame : frame.current()
     var table = []
     var names = []
-    attributes = node.getAttrList(_node)
+    attributes = node.getAttrList(_node,_frame)
     for(var a in attributes){
         const attr = attributes[a]
         if(attr.hasSubAttributes()){
@@ -168,7 +169,7 @@ function FSH_show_attributes(_node,_frame){
             names.push(attr.fullKeyword())
         }
     }
-    var msg = "ATTRIBUTES OF "+_node+" ( "+node.getType(_node)+") \n"
+    var msg = "ATTRIBUTES OF "+_node+" ( "+node.type(_node)+") \n"
     for(var n in names){
         const name = name[n]
         const value = node.getTextAttr(_node,aframe,name);
@@ -201,6 +202,7 @@ function FSH_add_sub(_node,_subname,_frame){
 }
 
 function FSH_get_exposed_sub(_node,_frame){
+    MessageLog.trace("FSH_get_exposed_sub ("+_node+") ("+_frame+")")
     // return all the name of the exposed sub at a frame
     const aframe = _frame != undefined ? _frame : frame.current()
     if(node.type(_node)!="READ"){
@@ -208,7 +210,10 @@ function FSH_get_exposed_sub(_node,_frame){
         return 
     }
     const readcol = node.linkedColumn(_node, "DRAWING")
-    return column.getEntry(readcol,1,aframe);
+    MessageLog.trace(readcol)
+    var sub_name = column.getEntry(readcol,0,aframe);
+    MessageLog.trace("return ("+sub_name+")")
+    return sub_name
 }
 
 
