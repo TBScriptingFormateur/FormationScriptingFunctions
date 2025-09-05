@@ -159,23 +159,26 @@ function FSH_show_attributes(_node,_frame){
     attributes = node.getAttrList(_node,_frame)
     for(var a in attributes){
         const attr = attributes[a]
+        names.push(attr.fullKeyword())
+
         if(attr.hasSubAttributes()){
             sub_attr = attr.getSubAttributes()
             for (var b in sub_attr){
                 var sub = sub_attr[b]
                 names.push(sub.fullKeyword())
             }
-        }else{
-            names.push(attr.fullKeyword())
         }
+        
     }
-    var msg = "ATTRIBUTES OF "+_node+" ( "+node.type(_node)+") \n"
+    var msg = "\n-------------------ATTRIBUTES OF "+_node+" ( "+node.type(_node)+") ----------------\n"
+    names.sort()
     for(var n in names){
-        const name = name[n]
+        const name = names[n]
         const value = node.getTextAttr(_node,aframe,name);
         table[name] = value
-        msg+=name+" : "+value
+        msg+="\n"+name+" : ("+value+")"
     }
+    msg+="\n--------------------------------------------------------------------------\n"
     MessageLog.trace(msg)
     MessageBox.information(msg)
     return table
@@ -190,7 +193,7 @@ function FSH_expose_sub(_node,_subname,_frame){
         MessageLog.trace("Error node "+_node+" is not a READ ")
         return 
     }
-    const readcol = node.linkedColumn(_node, "DRAWING")
+    const readcol = node.linkedColumn(_node,"DRAWING")
     const sub_timing = column.getDrawingTimings(readcol);
     if(sub_timing.indexOf(_subname)!=-1){
         column.setEntry(readcol,1,aframe,_subname);
@@ -202,6 +205,7 @@ function FSH_add_sub(_node,_subname,_frame){
 }
 
 function FSH_get_exposed_sub(_node,_frame){
+    
     MessageLog.trace("FSH_get_exposed_sub ("+_node+") ("+_frame+")")
     // return all the name of the exposed sub at a frame
     const aframe = _frame != undefined ? _frame : frame.current()
@@ -209,9 +213,13 @@ function FSH_get_exposed_sub(_node,_frame){
         MessageLog.trace("Error node "+_node+" is not a READ ")
         return 
     }
-    const readcol = node.linkedColumn(_node, "DRAWING")
-    MessageLog.trace(readcol)
-    var sub_name = column.getEntry(readcol,0,aframe);
+    var previously_selected_nodes = selection.selectedNodes()
+    selection.clearSelection()
+    selection.addNodeToSelection(_node)
+    var readcol = Timeline.selToColumn(0);
+    var sub_name = column.getEntry(readcol,1,aframe);
+    selection.clearSelection()
+    selection.addNodesToSelection(previously_selected_nodes)
     MessageLog.trace("return ("+sub_name+")")
     return sub_name
 }
