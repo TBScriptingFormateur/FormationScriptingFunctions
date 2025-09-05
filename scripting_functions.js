@@ -22,7 +22,6 @@ function FSH_add_node(_type,_name,_x,_y){
 }
 
 
-
 function FSH_get_transform_object(_node,_frame){
     // return an object gathering the main attribute value of the node (frame is optionnal)
     const aframe = _frame != undefined ? _frame : frame.current()
@@ -222,6 +221,7 @@ function FSH_get_exposed_sub(_node,_frame){
     selection.addNodesToSelection(previously_selected_nodes)
     MessageLog.trace("return ("+sub_name+")")
     return sub_name
+
 }
 
 
